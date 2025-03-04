@@ -9,14 +9,16 @@ import (
 )
 
 type ServerConfig struct {
-	ListenAddr      string
-	BannerDomain    string
-	ReadTimeout     time.Duration
-	WriteTimeout    time.Duration
-	Handler         HandlerFunc
-	Auther          AuthFunc
-	MaxMessageBytes int
-	TLSConfig       *tls.Config
+	ListenAddr        string
+	BannerDomain      string
+	ReadTimeout       time.Duration
+	WriteTimeout      time.Duration
+	Handler           HandlerFunc
+	Auther            AuthFunc
+	MaxMessageBytes   int
+	AllowInsecureAuth bool
+	AuthDisabled      bool
+	TLSConfig         *tls.Config
 }
 
 func ListenAndServe(cfg *ServerConfig) error {
@@ -29,8 +31,8 @@ func ListenAndServe(cfg *ServerConfig) error {
 	s.ReadTimeout = cfg.ReadTimeout
 	s.WriteTimeout = cfg.WriteTimeout
 	s.MaxMessageBytes = cfg.MaxMessageBytes
-	s.AllowInsecureAuth = true
-	s.AuthDisabled = true
+	s.AllowInsecureAuth = cfg.AllowInsecureAuth
+	s.AuthDisabled = cfg.AuthDisabled
 	s.EnableSMTPUTF8 = false
 
 	fmt.Println("⇨ smtp server started on", s.Addr)
@@ -48,8 +50,8 @@ func ListenAndServeTLS(cfg *ServerConfig) error {
 	s.ReadTimeout = cfg.ReadTimeout
 	s.WriteTimeout = cfg.WriteTimeout
 	s.MaxMessageBytes = cfg.MaxMessageBytes
-	s.AllowInsecureAuth = true
-	s.AuthDisabled = true
+	s.AllowInsecureAuth = cfg.AllowInsecureAuth
+	s.AuthDisabled = cfg.AuthDisabled
 	s.EnableSMTPUTF8 = false
 	s.EnableREQUIRETLS = true
 	s.TLSConfig = cfg.TLSConfig

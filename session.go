@@ -24,6 +24,8 @@ func NewSession(state *smtp.ConnectionState, handler HandlerFunc, username, pass
 	return &Session{
 		connState: state,
 		handler:   handler,
+		username:  username,
+		password:  password,
 	}
 }
 
