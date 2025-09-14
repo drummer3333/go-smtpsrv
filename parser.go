@@ -40,7 +40,6 @@ func ParseEmail(r io.Reader) (email *Email, err error) {
 		return
 	}
 
-
 	switch contentType {
 	case contentTypeMultipartMixed:
 		email.TextBody, email.HTMLBody, email.Attachments, email.EmbeddedFiles, err = parseMultipartMixed(msg.Body, params["boundary"])
@@ -179,7 +178,7 @@ func parseMultipartRelated(msg io.Reader, boundary string) (textBody, htmlBody s
 	return textBody, htmlBody, embeddedFiles, err
 }
 
-func decodeCharset(content io.Reader, contentTypeWithCharset string) (io.Reader) {
+func decodeCharset(content io.Reader, contentTypeWithCharset string) io.Reader {
 
 	charset := "default"
 	if strings.Contains(contentTypeWithCharset, "; charset=") {
@@ -420,6 +419,7 @@ func decodeContent(content io.Reader, encoding string, contentTypeWithCharset st
 
 		return decodeCharset(bytes.NewReader(b), contentTypeWithCharset), nil
 
+	case "8bit":
 	case "7bit":
 		dd, err := ioutil.ReadAll(content)
 		if err != nil {
