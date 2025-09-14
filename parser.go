@@ -420,6 +420,7 @@ func decodeContent(content io.Reader, encoding string, contentTypeWithCharset st
 		return decodeCharset(bytes.NewReader(b), contentTypeWithCharset), nil
 
 	case "8bit":
+		fallthrough
 	case "7bit":
 		dd, err := ioutil.ReadAll(content)
 		if err != nil {
